@@ -1,0 +1,10 @@
+# ModelSim project and compiled files
+*.mpf
+*.cr.mti
+work/
+
+# Backup files
+*.bak
+
+# Claude settings
+.claude/
