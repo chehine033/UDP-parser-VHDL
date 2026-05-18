@@ -78,6 +78,7 @@ begin
                 if s_axis_tlast = '1' then
                     valid_pipe <= (others => '0');
                     frame_ok   <= '1';
+		    shreg      <= (others => (others => '0'));	
                 end if;
 
             end if;

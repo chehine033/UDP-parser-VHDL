@@ -54,6 +54,47 @@ Bytes 34–41  UDP header (8 bytes)
   Bytes 38–39 UDP length
 ```
 
+## Simulation
+
+The testbench (`udp_parser_tb.vhd`) sends three packet types back-to-back and verifies the parser behaviour in each case.
+
+| Test | Input | Expected result |
+|------|-------|-----------------|
+| Valid UDP | EtherType `0x0800`, Protocol `0x11` | `parsing_done` pulses; all header fields decoded |
+| TCP frame | Protocol `0x06` | `frame_ok` cleared; `parsing_done` never fires |
+| ARP frame | EtherType `0x0806` | `frame_ok` cleared at byte 13; `parsing_done` never fires |
+| UDP after ARP | Valid UDP following an ARP discard | Parser resets cleanly; `parsing_done` fires normally |
+
+### Valid UDP — header fields extracted
+
+![UDP packet simulation](sim/testbench_udp_packet.png)
+
+### TCP packet — silently discarded
+
+![TCP packet simulation](sim/testbench_tcp_packet.png)
+
+### ARP packet — silently discarded
+
+![ARP packet simulation](sim/testbench_arp_packet.png)
+
+### UDP after ARP — clean pipeline recovery
+
+![UDP after ARP simulation](sim/testbench_udp_after_arp.png)
+
+## Running the Testbench
+
+Requires ModelSim or QuestaSim. Run from the project root:
+
+```tcl
+vlib work
+vcom udp_parser.vhd udp_parser_tb.vhd
+vsim udp_parser_tb
+do sim/wave.do
+run -all
+```
+
+The `sim/wave.do` script pre-configures the waveform window with all AXI-Stream signals, the internal shift register (`shreg`), `valid_pipe`, `frame_ok`, and all parsed output fields — all displayed in hexadecimal.
+
 ## License
 
 MIT
