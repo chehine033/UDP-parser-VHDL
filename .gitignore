@@ -1,6 +1,7 @@
 # ModelSim project and compiled files
 *.mpf
 *.cr.mti
+*.wlf
 work/
 
 # Backup files
@@ -8,3 +9,22 @@ work/
 
 # Claude settings
 .claude/
+
+# Quartus synthesis project
+synthesis/
+
+# SoC bus warmup files (not part of this repo)
+Master1.vhd
+master2.vhd
+slave.vhd
+arbiter.vhd
+SoC bus.vhd
+
+# Old simulation artifacts
+UDPparserwave.do
+testbenchwaveudpparser
+vsim.wlf
+udp parser testbench with arp packet no outliner.png
+udp parser testbench with tcp packet no outliner.png
+udp parser testbench with udp packet no outliner.png
+udp parser testbench with udp second time after arp packet no outliner.png

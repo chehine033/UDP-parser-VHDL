@@ -95,6 +95,40 @@ run -all
 
 The `sim/wave.do` script pre-configures the waveform window with all AXI-Stream signals, the internal shift register (`shreg`), `valid_pipe`, `frame_ok`, and all parsed output fields — all displayed in hexadecimal.
 
+## FPGA Synthesis
+
+Synthesized using **Quartus Prime Pro 26.1.0** targeting the **Cyclone 10 GX (10CX220YF780E5G)**.
+
+### Device Selection Note
+
+The initial target was the 10CX085YF672E5G (F672 package, 216 user I/O). This design exposes 222 output ports — exceeding that package's limit. Switching to the 10CX220YF780E5G (F780 package, 340 user I/O) resolves the constraint with 65% pin utilization, while the device family and logic architecture remain identical.
+
+### Results
+
+| Metric | Value |
+|--------|-------|
+| Device | Cyclone 10 GX 10CX220YF780E5G |
+| Logic utilization | 99 / 80,330 ALMs (< 1%) |
+| Registers | 379 |
+| Total pins | 222 / 340 (65%) |
+| Timing constraint | 200 MHz (5 ns period) |
+| Slack | +1.609 ns |
+| Fmax | ~295 MHz |
+
+### Flow Summary
+
+![Flow Summary](updparser%20flow%20summary.png)
+
+### Setup Summary (Timing)
+
+![Setup Summary](updparser%20setup%20summary.png)
+
+### RTL Viewer
+
+![RTL View](updparser%20RTL%20viewer.png)
+
+The RTL view shows the 42-stage shift register chain (`shreg`) that is the core of the parser. Each stage holds one byte of the incoming frame; the valid tracking pipeline (`valid_pipe`) runs in parallel. The small combinational block at the bottom is the EtherType/Protocol check and output field mux.
+
 ## License
 
 MIT
